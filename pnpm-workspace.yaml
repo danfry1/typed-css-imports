@@ -1,0 +1,12 @@
+# Supply-chain settings. Every dependency, direct or transitive, must have been published for at least
+# a week before it can be installed, so a compromised release has time to be caught and pulled.
+minimumReleaseAge: 10080
+# Exact versions only; upgrades are deliberate edits.
+savePrefix: ''
+# Transitive dependencies may only come from the registry, never git URLs or tarballs.
+blockExoticSubdeps: true
+# Fail if a package's trust evidence (provenance, trusted publisher) drops from an earlier version.
+trustPolicy: no-downgrade
+# No install scripts run unless listed here, and an unlisted package that wants one fails the install.
+strictDepBuilds: true
+onlyBuiltDependencies: []

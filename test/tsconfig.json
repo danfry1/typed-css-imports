@@ -1,0 +1,3 @@
+{ "compilerOptions": { "target": "esnext", "module": "esnext", "moduleResolution": "bundler", "strict": true, "noEmit": true, "allowArbitraryExtensions": true },
+  "include": ["."],
+  "contentMappers": [{ "package": "typed-css-imports", "extensions": [".module.css"], "options": { "localsConvention": "camelCase" } }] }

@@ -1,0 +1,2 @@
+{ "compilerOptions": { "target": "esnext", "module": "esnext", "moduleResolution": "bundler", "strict": true, "noEmit": true, "allowArbitraryExtensions": true },
+  "include": ["."] }

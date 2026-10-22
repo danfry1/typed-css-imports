@@ -1,0 +1,11 @@
+/* .commented-out { } */
+@value brand: #0a7;
+.button { color: brand; }
+.button-primary:hover, .icon > .label { background: url("a.b.png"); }
+@media (min-width: 600px) { .wide { padding: 1rem; } }
+:global(.not-mine) .local { margin: 0; }
+.price::before { content: ".fake"; }
+.card { &.active { color: blue; } }
+#main { }
+@keyframes spin { 50.5% { opacity: .5 } }
+.sm\:p-4 { }

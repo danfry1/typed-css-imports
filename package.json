@@ -1,0 +1,41 @@
+{
+  "name": "typed-css-imports",
+  "version": "0.0.0",
+  "description": "Type-checked CSS modules with plain tsc: `styles.buttn` is a compile error. A TypeScript 7.1 content mapper.",
+  "license": "MIT",
+  "author": "Daniel Fry",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "exports": {
+    "./mapper": "./src/server.js",
+    "./transform": "./src/transform.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "typed-css-imports": "src/cli.js"
+  },
+  "files": [
+    "src",
+    "LICENSE"
+  ],
+  "typescript": {
+    "contentMapper": {
+      "exec": [
+        "node",
+        "src/server.js"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "tsc -p test --runExternalCode && node --test \"test/*.test.mjs\" && test/fallback.sh"
+  },
+  "dependencies": {
+    "postcss": "8.5.30",
+    "postcss-modules": "9.0.1"
+  },
+  "devDependencies": {
+    "typed-css-imports": "link:",
+    "typescript": "7.1.0-dev.20261015.1"
+  }
+}
