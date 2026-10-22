@@ -6,13 +6,13 @@
   cursor: pointer;
 }
 
-.button-primary {
+.primary {
   background: royalblue;
   color: white;
 }
 
-.button-ghost {
+.ghost {
   background: transparent;
   color: royalblue;
-  box-shadow: inset 0 0 0 1px currentColor;
+  border: 1px solid currentColor;
 }

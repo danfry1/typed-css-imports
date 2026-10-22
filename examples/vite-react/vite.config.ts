@@ -4,5 +4,5 @@ import react from "@vitejs/plugin-react";
 // Keep localsConvention in sync with the contentMappers options in tsconfig.json.
 export default defineConfig({
   plugins: [react()],
-  css: { modules: { localsConvention: "camelCase" } },
+  css: { modules: { localsConvention: "camelCaseOnly" } },
 });

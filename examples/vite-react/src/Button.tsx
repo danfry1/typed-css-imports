@@ -1,7 +1,19 @@
 import type { ReactNode } from "react";
 import styles from "./Button.module.css";
 
-export function Button({ variant = "primary", children }: { variant?: "primary" | "ghost"; children: ReactNode }) {
-  const variantClass = variant === "primary" ? styles.buttonPrimary : styles.buttonGhost;
-  return <button className={`${styles.button} ${variantClass}`}>{children}</button>;
+type Props = {
+  variant?: "primary" | "ghost";
+  children: ReactNode;
+};
+
+export function Button({ variant = "primary", children }: Props) {
+  const variants = {
+    primary: styles.primary,
+    ghost: styles.ghost,
+  };
+  return (
+    <button className={`${styles.button} ${variants[variant]}`}>
+      {children}
+    </button>
+  );
 }

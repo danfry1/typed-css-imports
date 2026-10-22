@@ -13,6 +13,6 @@
   },
   "include": ["src", "vite.config.ts"],
   "contentMappers": [
-    { "package": "typed-css-imports", "extensions": [".module.css"], "options": { "localsConvention": "camelCase" } }
+    { "package": "typed-css-imports", "extensions": [".module.css"], "options": { "localsConvention": "camelCaseOnly" } }
   ]
 }
