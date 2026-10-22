@@ -2,6 +2,8 @@
 
 Type-checked CSS modules with plain `tsc`. A misspelled class name is a compile error, in your editor and in CI.
 
+![Renaming a class in a CSS module makes tsc report every stale use](docs/demo.gif)
+
 ```css
 /* button.module.css */
 .button { color: white; }
@@ -25,7 +27,7 @@ styles.buttn;
 
 ## Setup
 
-Requires TypeScript 7.1 (currently in beta) and Node >= 20.6.
+Requires TypeScript 7.1 (currently in beta) and Node >= 22.12.
 
 ```sh
 pnpm add -D typed-css-imports
@@ -55,6 +57,10 @@ tsc --noEmit --runExternalCode
 ```
 
 **Editors:** the TypeScript 7.1 language server starts content mappers only when the client sends `initializationOptions: { runExternalCode: true }`. Without it, every CSS module import reports TS2307.
+
+## Example
+
+[`examples/vite-react`](examples/vite-react) is a Vite + React app with `vite/client` types and `localsConvention: "camelCase"` in both `vite.config.ts` and `tsconfig.json`. `pnpm --filter example-vite-react run parity` loads every CSS module through Vite and checks that the names Vite exports at runtime match the types exactly.
 
 ## What's exported
 
@@ -91,9 +97,12 @@ With `allowArbitraryExtensions`, tsc picks up `button.module.d.css.ts` for `impo
 ## Development
 
 ```sh
-pnpm install
-pnpm test   # type tests, transform tests, language-server test, generate fallback
+pnpm install --frozen-lockfile
+pnpm test   # source type-check, type tests, transform tests, language-server test, generate fallback, example + Vite parity
+vhs docs/demo.tape   # re-record docs/demo.gif
 ```
+
+Supply-chain settings and how to report vulnerabilities: [SECURITY.md](SECURITY.md).
 
 ## License
 

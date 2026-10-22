@@ -1,0 +1,18 @@
+.button {
+  padding: 0.6rem 1.2rem;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: royalblue;
+  color: white;
+}
+
+.button-ghost {
+  background: transparent;
+  color: royalblue;
+  box-shadow: inset 0 0 0 1px currentColor;
+}

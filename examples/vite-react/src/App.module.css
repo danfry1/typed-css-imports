@@ -1,0 +1,12 @@
+.app {
+  display: grid;
+  gap: 1rem;
+  place-content: center;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}

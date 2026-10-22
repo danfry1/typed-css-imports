@@ -1,0 +1,14 @@
+// Type-checks the package's own JavaScript sources (src/) with JSDoc inference. Tests have their own tsconfig in test/.
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "types": ["node"]
+  },
+  "include": ["src"]
+}

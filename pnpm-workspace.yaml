@@ -10,3 +10,12 @@ trustPolicy: no-downgrade
 # No install scripts run unless listed here, and an unlisted package that wants one fails the install.
 strictDepBuilds: true
 onlyBuiltDependencies: []
+
+# The package itself plus example apps that use it via workspace:*.
+packages:
+  - "."
+  - "examples/*"
+# Refuse to run package scripts when node_modules does not match the lockfile.
+verifyDepsBeforeRun: error
+# Fail the install on a Node.js version outside `engines`.
+engineStrict: true

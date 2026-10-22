@@ -10,13 +10,22 @@ class NoFileLoader {
   async fetch() { return {}; }
 }
 
+/**
+ * @typedef {object} Options
+ * @property {string} [fileName] Path of the CSS file; used in error messages.
+ * @property {"camelCase" | "camelCaseOnly" | "dashes" | "dashesOnly"} [localsConvention] Same as the bundler's setting.
+ */
+
+/** @param {string} css @param {Options} [options] @returns {Promise<string[]>} */
 export async function exportedNames(css, { fileName = "input.module.css", localsConvention } = {}) {
+  /** @type {Record<string, string>} */
   let names = {};
   await postcss([postcssModules({ getJSON: (_, json) => { names = json; }, Loader: NoFileLoader, localsConvention, generateScopedName: "[local]" })])
     .process(css, { from: fileName });
   return Object.keys(names);
 }
 
+/** @param {string} css @param {Options} [options] @returns {Promise<string>} */
 export async function transform(css, options) {
   const names = await exportedNames(css, options);
   return `declare const styles: {\n${names.map((n) => `  readonly ${JSON.stringify(n)}: string;`).join("\n")}\n};\nexport default styles;\n`;
