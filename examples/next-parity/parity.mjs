@@ -37,6 +37,12 @@ const typed = Object.fromEntries(await Promise.all(files.map(async (f) => [f, aw
 const short = (f) => f.replace(/^fixtures\//, "");
 /** @param {string} s */
 const unescapeHtml = (s) => s.replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+// Differences the README documents under Limits: Lightning CSS (Turbopack) omits names for empty rules and @value.
+// Any other difference fails the check, and so does one of these disappearing, since the README is then out of date.
+/** @type {Record<string, Record<string, { missingFromTypes: string[], extraInTypes: string[] }>>} */
+const known = {
+  turbopack: { "test/button.module.css": { missingFromTypes: [], extraInTypes: ["brand", "main", "sm:p-4"] } },
+};
 let failed = false;
 for (const bundler of ["webpack", "turbopack"]) {
   rmSync(here + ".next", { recursive: true, force: true });
@@ -55,8 +61,13 @@ for (const bundler of ["webpack", "turbopack"]) {
     const missing = runtime[f].filter((n) => !typed[f].includes(n)), extra = typed[f].filter((n) => !runtime[f].includes(n));
     return missing.length || extra.length ? [{ file: short(f), missingFromTypes: missing, extraInTypes: extra }] : [];
   });
-  console.log(JSON.stringify({ bundler, files: files.length, same: files.length - diffs.length, differ: diffs.length }));
-  for (const d of diffs) console.log(JSON.stringify(d));
-  if (diffs.length) failed = true;
+  const expected = known[bundler] ?? {};
+  const sameAsKnown = (d) => JSON.stringify(expected[d.file]) === JSON.stringify({ missingFromTypes: d.missingFromTypes, extraInTypes: d.extraInTypes });
+  const unexpected = diffs.filter((d) => !sameAsKnown(d));
+  const gone = Object.keys(expected).filter((f) => !diffs.some((d) => d.file === f && sameAsKnown(d)));
+  console.log(JSON.stringify({ bundler, files: files.length, same: files.length - diffs.length, knownDifferences: diffs.length - unexpected.length, unexpected: unexpected.length }));
+  for (const d of unexpected) console.log(JSON.stringify({ unexpected: d }));
+  for (const f of gone) console.log(JSON.stringify({ documentedDifferenceGone: f, note: "update `known` here and the Next.js line under Limits in the README" }));
+  if (unexpected.length || gone.length) failed = true;
 }
 process.exit(failed ? 1 : 0);
