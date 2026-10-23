@@ -9,7 +9,9 @@ blockExoticSubdeps: true
 trustPolicy: no-downgrade
 # No install scripts run unless listed here, and an unlisted package that wants one fails the install.
 strictDepBuilds: true
-onlyBuiltDependencies: []
+# Build decisions per package. sass's optional file watcher is only used by `sass --watch`, so its build is denied.
+allowBuilds:
+  "@parcel/watcher": false
 
 # The package itself plus example apps that use it via workspace:*.
 packages:

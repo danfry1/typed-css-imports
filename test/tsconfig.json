@@ -1,3 +1,4 @@
 { "compilerOptions": { "target": "esnext", "module": "esnext", "moduleResolution": "bundler", "strict": true, "noEmit": true, "allowArbitraryExtensions": true },
   "include": ["."],
-  "contentMappers": [{ "package": "typed-css-imports", "extensions": [".module.css"], "options": { "localsConvention": "camelCase" } }] }
+  "contentMappers": [{ "package": "typed-css-imports", "extensions": [".module.css", ".module.scss", ".module.sass"],
+    "options": { "localsConvention": "camelCase", "sass": { "loadPaths": ["styles"] } } }] }

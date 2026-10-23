@@ -1,0 +1,12 @@
+$radius: 12px;
+
+.card {
+  padding: 1rem;
+  border-radius: $radius;
+  &-title { margin: 0 0 0.5rem; }
+}
+
+// One class per tone: .tone-info, .tone-warning (toneInfo, toneWarning in TypeScript).
+@each $tone, $color in (info: royalblue, warning: darkorange) {
+  .tone-#{$tone} { border: 1px solid $color; }
+}

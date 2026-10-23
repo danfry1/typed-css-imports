@@ -1,0 +1,17 @@
+// Sass module: classes come from nesting, a partial found through `loadPaths` (tokens), a relative partial
+// (layout), a mixin called in a loop, and @extend. Placeholders (%) and variables are not exported.
+@use "tokens";
+@use "./layout";
+
+%surface { border-radius: 8px; }
+
+.card {
+  @extend %surface;
+  color: tokens.$brand;
+  &-title { font-weight: bold; }
+  &.is-active { outline: 1px solid; }
+}
+
+@each $name in info, danger {
+  @include tokens.tone($name);
+}

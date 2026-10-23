@@ -1,0 +1,5 @@
+// Partial used by card.module.scss: a mixin that generates a class per name.
+$brand: royalblue;
+@mixin tone($name) {
+  .tone-#{$name} { color: $brand; }
+}
