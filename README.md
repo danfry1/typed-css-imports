@@ -70,6 +70,20 @@ Type-check with external code enabled. Content mappers run code at type-check ti
 tsc --noEmit --runExternalCode
 ```
 
+### Check it's working
+
+If the mapper isn't running, imports don't fail: they fall back to the `{ [key: string]: string }` stub from `vite/client` or Next.js, and typos pass silently. Add one file that turns that into an error:
+
+```ts
+// src/css-modules.check.ts
+import styles from "./Button.module.css"; // any CSS module in your project
+
+// @ts-expect-error typed-css-imports is not running if this line is not an error
+styles.thisClassDoesNotExist;
+```
+
+With the mapper running, this file type-checks. Without it (the editor on the wrong TypeScript version, or `tsc` without `--runExternalCode`), it reports TS2578 "Unused '@ts-expect-error' directive", in CI and in the editor. [`examples/vite-react`](examples/vite-react/src/css-modules.check.ts) includes one.
+
 ## Editor setup
 
 The TypeScript 7.1 language server (`tsc --lsp`) starts content mappers only when the client sends `initializationOptions: { runExternalCode: true }`. Without it, CSS module imports report TS2307, or with `vite/client` types silently fall back to `{ [key: string]: string }`.
