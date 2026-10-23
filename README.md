@@ -167,6 +167,7 @@ With `allowArbitraryExtensions`, tsc picks up `button.module.d.css.ts` for `impo
 
 ## Limits
 
+- Next.js: with webpack, names match fully. Turbopack also omits names for empty rules (`.x { }`) and for `@value`, so those are typed but `undefined` at runtime there.
 - No Less or Stylus modules.
 - Editing a Sass partial doesn't update the modules that `@use` it in the editor until the module itself is edited or the language server restarts. `tsc` on the command line always compiles the current files.
 - `additionalData` only in its string form; Vite's function form can't be expressed in tsconfig.json.
@@ -178,6 +179,7 @@ With `allowArbitraryExtensions`, tsc picks up `button.module.d.css.ts` for `impo
 ```sh
 pnpm install --frozen-lockfile
 pnpm test   # source type-check, type tests, transform tests, language-server test, generate fallback, example + Vite parity
+pnpm --filter example-next-parity run parity   # Next.js parity (webpack and Turbopack builds; weekly in CI)
 docs/demo/record-ghostty.sh   # re-record docs/demo.gif in a real Ghostty window (macOS 15+, Screen Recording permission)
 vhs docs/demo/nvim.tape       # or render it headlessly with vhs (no Ghostty cursor shaders)
 ```
