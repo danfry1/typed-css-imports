@@ -55,9 +55,9 @@
     "postcss-modules": "9.0.1"
   },
   "devDependencies": {
-    "@types/node": "24.19.2",
-    "sass": "1.105.1",
+    "@types/node": "26.6.5",
+    "sass": "1.105.2",
     "typed-css-imports": "link:",
-    "typescript": "7.1.0-dev.20261015.1"
+    "typescript": "7.1.0-dev.20261017.1"
   }
 }
