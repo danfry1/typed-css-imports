@@ -1,10 +1,23 @@
 {
   "name": "typed-css-imports",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Typed CSS and Sass module imports with plain tsc: `styles.buttn` is a compile error. A TypeScript 7.1 content mapper.",
   "license": "MIT",
   "author": "Daniel Fry",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danfry1/typed-css-imports.git"
+  },
+  "homepage": "https://github.com/danfry1/typed-css-imports#readme",
+  "bugs": "https://github.com/danfry1/typed-css-imports/issues",
+  "keywords": [
+    "typescript",
+    "css-modules",
+    "sass",
+    "content-mapper",
+    "tsc",
+    "types"
+  ],
   "type": "module",
   "packageManager": "pnpm@11.28.6+sha512.55d90390c3b39042f1505a2697789f0256c6d95bb28bdd7cb731af1887c9f2629ef581acb9f4e4ec772024c8203c2aed22a03299b97103fdcf32668e905d0024",
   "engines": {
@@ -23,8 +36,7 @@
     "LICENSE"
   ],
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "typescript": {
     "contentMapper": {

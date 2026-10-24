@@ -12,7 +12,7 @@ treats CSS files as untrusted input:
 - Dependencies are pinned to exact versions and installed from the lockfile (`pnpm install --frozen-lockfile`).
 - `pnpm-workspace.yaml` requires every dependency, direct or transitive, to have been published for at least a week,
   blocks git/tarball dependencies, blocks install scripts, and fails on trust downgrades (lost provenance).
-- CI uses actions pinned to commit SHAs with a read-only token. Published releases carry npm provenance.
+- CI uses actions pinned to commit SHAs with a read-only token. Releases published from CI carry npm provenance; 0.1.0 was published manually, before the repository was public, and has none.
 
 ## Reporting a vulnerability
 
