@@ -28,13 +28,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          # Full history: the tag-on-main check compares the tagged commit against origin/main.
+          # Full history, including origin/main, which the tag-on-main check compares against. (With
+          # persist-credentials: false a later `git fetch` can't authenticate to a private repository.)
           fetch-depth: 0
 
       - name: Tag is on main
         # A tag on a branch commit, or on a commit from before a fix landed, would pass every later check.
         run: |
-          git fetch --no-tags origin main
           if ! git merge-base --is-ancestor HEAD origin/main; then
             echo "::error::The tagged commit $(git rev-parse HEAD) is not on main."
             exit 1

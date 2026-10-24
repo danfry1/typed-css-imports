@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.1-beta.0
+## 0.1.1-beta.1
 
-No code changes. First release published from CI through npm staged publishing (trusted publishing).
+No code changes. First release published from CI through npm staged publishing (trusted publishing). (The v0.1.1-beta.0 tag's release run failed before publishing.)
 
 ## 0.1.0
 
