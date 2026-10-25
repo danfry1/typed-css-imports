@@ -12,6 +12,10 @@ updates:
       # A major bump is a deliberate change.
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # npm is the release tool (npm stage publish), which CI doesn't exercise, and a new major can raise the Node
+      # range that engineStrict enforces on every contributor's install.
+      - dependency-name: "npm"
+        update-types: ["version-update:semver-major"]
     groups:
       dependencies:
         patterns: ["*"]
