@@ -58,6 +58,8 @@ jobs:
       - if: steps.gate.outputs.run == 'true'
         run: pnpm install --frozen-lockfile
       - if: steps.gate.outputs.run == 'true'
+        run: pnpm build
+      - if: steps.gate.outputs.run == 'true'
         run: pnpm --filter example-next-parity run parity
         env:
           NEXT_TELEMETRY_DISABLED: "1"

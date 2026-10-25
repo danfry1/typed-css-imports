@@ -4,9 +4,10 @@
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm test   # source type-check, type tests, transform tests, language-server test, generate fallback, example + Vite parity
+pnpm build  # compile src/*.ts to dist/ (tsc reads the mapper from dist/server.js, so build after changing src/)
+pnpm test   # build, type tests, transform tests, language-server tests, generate fallback, example + Vite parity
 pnpm test:package   # install the packed tarball into an empty project and run tsc and the CLI against it
-pnpm --filter example-next-parity run parity   # Next.js parity (webpack and Turbopack builds; weekly in CI)
+pnpm build && pnpm --filter example-next-parity run parity   # Next.js parity (webpack and Turbopack builds; weekly in CI)
 docs/demo/record-ghostty.sh   # re-record docs/demo.gif in a real Ghostty window (macOS 15+, Screen Recording permission)
 vhs docs/demo/nvim.tape       # or render it headlessly with vhs (no Ghostty cursor shaders)
 ```

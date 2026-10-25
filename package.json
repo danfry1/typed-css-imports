@@ -24,15 +24,18 @@
     "node": ">=22.12"
   },
   "exports": {
-    "./mapper": "./src/server.js",
-    "./transform": "./src/transform.js",
+    "./mapper": "./dist/server.js",
+    "./transform": {
+      "types": "./dist/transform.d.ts",
+      "default": "./dist/transform.js"
+    },
     "./package.json": "./package.json"
   },
   "bin": {
-    "typed-css-imports": "src/cli.js"
+    "typed-css-imports": "dist/cli.js"
   },
   "files": [
-    "src",
+    "dist",
     "LICENSE",
     "CHANGELOG.md"
   ],
@@ -43,14 +46,15 @@
     "contentMapper": {
       "exec": [
         "node",
-        "src/server.js"
+        "dist/server.js"
       ]
     }
   },
   "scripts": {
-    "test": "pnpm typecheck && tsc -p test --runExternalCode && node --test \"test/*.test.mjs\" && test/fallback.sh && pnpm --filter example-vite-react run typecheck && pnpm --filter example-vite-react run parity",
-    "typecheck": "tsc -p .",
+    "build": "tsc -p .",
+    "test": "pnpm build && tsc -p test --runExternalCode && node --test \"test/*.test.mjs\" && test/fallback.sh && pnpm --filter example-vite-react run typecheck && pnpm --filter example-vite-react run parity",
     "test:package": "test/package.sh",
+    "prepack": "tsc -p .",
     "prepublishOnly": "node -e \"if (!process.env.GITHUB_ACTIONS) { console.error('Releases are published from CI: push a signed v* tag (see CONTRIBUTING.md).'); process.exit(1) }\""
   },
   "dependencies": {

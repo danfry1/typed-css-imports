@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
-import { exportedNames, mappedTransform, transform, SassError } from "../src/transform.js";
+import { exportedNames, mappedTransform, transform, SassError } from "../dist/transform.js";
 
 const cases = [
   ["classes and pseudo selectors", ".g:is(.h, .i):not(.j) { } .k::after { content: \".notaclass\"; }", ["g", "h", "i", "j", "k"]],

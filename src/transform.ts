@@ -8,7 +8,7 @@
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import postcss from "postcss";
+import postcss, { type AtRule } from "postcss";
 import postcssModules from "postcss-modules";
 import selectorParser from "postcss-selector-parser";
 import { SourceMapConsumer } from "source-map-js";
@@ -19,23 +19,28 @@ class NoFileLoader {
   async fetch() { return {}; }
 }
 
-/**
- * @typedef {object} SassOptions
- * @property {string[]} [loadPaths] Extra directories for `@use`/`@import`, relative to the tsconfig.json.
- * @property {string} [additionalData] Prepended to every Sass module, like Vite's `css.preprocessorOptions.scss.additionalData`.
- */
-/**
- * @typedef {object} Options
- * @property {string} [fileName] Path of the CSS file; used in error messages and to resolve Sass imports.
- * @property {"camelCase" | "camelCaseOnly" | "dashes" | "dashesOnly"} [localsConvention] Same as the bundler's setting.
- * @property {SassOptions} [sass] Options for `.module.scss` and `.module.sass` files.
- * @property {string} [configFileName] tsconfig.json the options came from; relative `sass.loadPaths` resolve against it.
- */
+export interface SassOptions {
+  /** Extra directories for `@use`/`@import`, relative to the tsconfig.json. */
+  loadPaths?: string[];
+  /** Prepended to every Sass module, like Vite's `css.preprocessorOptions.scss.additionalData`. */
+  additionalData?: string;
+}
+
+export interface Options {
+  /** Path of the CSS file; used in error messages and to resolve Sass imports. */
+  fileName?: string;
+  /** Same as the bundler's setting. */
+  localsConvention?: "camelCase" | "camelCaseOnly" | "dashes" | "dashesOnly";
+  /** Options for `.module.scss` and `.module.sass` files. */
+  sass?: SassOptions;
+  /** tsconfig.json the options came from; relative `sass.loadPaths` resolve against it. */
+  configFileName?: string;
+}
 
 /** A Sass compile error, with its offset in the module's own source when it is in that file. */
 export class SassError extends Error {
-  /** @param {string} message @param {number | undefined} offset */
-  constructor(message, offset) {
+  readonly offset: number | undefined;
+  constructor(message: string, offset: number | undefined) {
     super(message);
     this.name = "SassError";
     this.offset = offset;
@@ -43,11 +48,9 @@ export class SassError extends Error {
 }
 
 // The project's own Sass, resolved from the module's directory, so types match what its bundler compiles. Like Vite,
-// sass-embedded is preferred when both are installed.
-/** @type {Map<string, Promise<any>>} */
-const sassByPath = new Map();
-/** @param {string} fileName */
-function loadSass(fileName) {
+// sass-embedded is preferred when both are installed. It is the project's dependency, not ours, so it is untyped here.
+const sassByPath = new Map<string, Promise<any>>();
+function loadSass(fileName: string): Promise<any> {
   const require = createRequire(resolve(fileName));
   for (const name of ["sass-embedded", "sass"]) {
     let path;
@@ -60,8 +63,7 @@ function loadSass(fileName) {
   throw new SassError(`${fileName} needs the "sass" package to compile. Install it in the project (e.g. pnpm add -D sass).`, undefined);
 }
 
-/** @param {string} source @param {Options & { fileName: string }} options */
-async function compileSass(source, { fileName, sass: { loadPaths = [], additionalData = "" } = {}, configFileName }) {
+async function compileSass(source: string, { fileName, sass: { loadPaths = [], additionalData = "" } = {}, configFileName }: Options & { fileName: string }) {
   const sass = await loadSass(fileName);
   const url = pathToFileURL(resolve(fileName));
   const base = configFileName ? dirname(configFileName) : dirname(resolve(fileName));
@@ -74,9 +76,9 @@ async function compileSass(source, { fileName, sass: { loadPaths = [], additiona
       logger: sass.Logger.silent,
       sourceMap: true,
     });
-    return { css: result.css, map: new SourceMapConsumer(result.sourceMap), url: url.href, input: additionalData + source, prefixLength: additionalData.length };
+    return { css: result.css as string, map: new SourceMapConsumer(result.sourceMap), url: url.href, input: additionalData + source, prefixLength: additionalData.length };
   } catch (e) {
-    const err = /** @type {any} */ (e);
+    const err = e as any;
     if (!err?.sassMessage) throw e;
     // Errors inside the module itself point at their position (minus any additionalData); errors in imported files or
     // in additionalData are reported at the start of the module, with the file and line in the message.
@@ -90,14 +92,12 @@ async function compileSass(source, { fileName, sass: { loadPaths = [], additiona
 /**
  * The module's exports, keyed by exported name with the local name it was declared as (they differ under
  * `localsConvention`), plus the CSS postcss-modules read and, for Sass, the map from that CSS back to the source.
- * @param {string} source @param {Options} options
  */
-async function analyze(source, options) {
+async function analyze(source: string, options: Options) {
   const { fileName = "input.module.css", localsConvention } = options;
   const sass = /\.s[ac]ss$/.test(fileName) ? await compileSass(source, { ...options, fileName }) : undefined;
   const css = sass?.css ?? source;
-  /** @type {Record<string, string>} */
-  let json = {};
+  let json: Record<string, string> = {};
   // Scoped names are the local names unchanged, so each value is the local name (a class with `composes` adds the
   // composed names). The exported keys don't depend on it.
   await postcss([postcssModules({ getJSON: (_, j) => { json = j; }, Loader: NoFileLoader, localsConvention, generateScopedName: (name) => name })])
@@ -105,32 +105,29 @@ async function analyze(source, options) {
   return { json, css, sass };
 }
 
-/** @param {string} css @param {Options} [options] @returns {Promise<string[]>} */
-export async function exportedNames(css, options = {}) {
+export async function exportedNames(css: string, options: Options = {}): Promise<string[]> {
   return Object.keys((await analyze(css, options)).json);
 }
 
 // The fields of postcss-selector-parser's nodes used below. (Its own declarations fail TypeScript 7's circularity check.)
-/** @typedef {{ type: string, value: string, sourceIndex: number, raws?: { value?: string }, nodes: SelectorNode[] }} SelectorNode */
-const parseSelectors = /** @type {(transform: (root: { nodes: SelectorNode[] }) => void) => { processSync(selector: string): unknown }} */ (
-  /** @type {unknown} */ (selectorParser));
+interface SelectorNode { type: string; value: string; sourceIndex: number; raws?: { value?: string }; nodes: SelectorNode[] }
+const parseSelectors = selectorParser as unknown as (transform: (root: { nodes: SelectorNode[] }) => void) => { processSync(selector: string): unknown };
+
+interface Declaration { name: string; start: number; length: number; value?: boolean }
 
 /**
  * Where `css` declares each local name: classes and ids in selectors (not inside `:global`), `@keyframes` names and
  * `@value` names (marked `value`), in source order. `length` is the name's length as written, which differs from the
  * name when it has escapes (`.sm\:p-4`).
- * @param {string} css @returns {{ name: string, start: number, length: number, value?: boolean }[]}
  */
-function declarations(css) {
-  /** @type {{ name: string, start: number, length: number, value?: boolean }[]} */
-  const found = [];
+function declarations(css: string): Declaration[] {
+  const found: Declaration[] = [];
   const root = postcss.parse(css);
   root.walkRules((rule) => {
-    if (rule.parent?.type === "atrule" && /keyframes$/i.test(/** @type {import("postcss").AtRule} */ (rule.parent).name)) return;
+    if (rule.parent?.type === "atrule" && /keyframes$/i.test((rule.parent as AtRule).name)) return;
     const start = rule.source?.start?.offset;
     if (start === undefined) return;
-    /** @param {SelectorNode} selector @param {boolean} global */
-    const visit = (selector, global) => {
+    const visit = (selector: SelectorNode, global: boolean) => {
       let isGlobal = global;
       for (const node of selector.nodes) {
         if (node.type === "pseudo" && (node.value === ":global" || node.value === ":local")) {
@@ -144,7 +141,7 @@ function declarations(css) {
         }
       }
     };
-    const raw = /** @type {{ raw?: string } | undefined} */ (rule.raws.selector)?.raw ?? rule.selector;
+    const raw = (rule.raws.selector as { raw?: string } | undefined)?.raw ?? rule.selector;
     parseSelectors((root) => { for (const s of root.nodes) visit(s, false); }).processSync(raw);
   });
   root.walkAtRules((at) => {
@@ -160,7 +157,7 @@ function declarations(css) {
         const imports = /^(.*?)\s+from\s/.exec(at.params)?.[1] ?? "";
         for (const m of imports.matchAll(/([\w-]+)(?:\s+as\s+([\w-]+))?/g)) {
           const name = m[2] ?? m[1];
-          found.push({ name, start: paramsStart + /** @type {number} */ (m.index) + m[0].length - name.length, length: name.length, value: true });
+          found.push({ name, start: paramsStart + m.index + m[0].length - name.length, length: name.length, value: true });
         }
       }
     }
@@ -168,29 +165,26 @@ function declarations(css) {
   return found.sort((a, b) => a.start - b.start);
 }
 
-/** @param {string} text */
-const lineStarts = (text) => [0, ...[...text.matchAll(/\n/g)].map((m) => /** @type {number} */ (m.index) + 1)];
+const lineStarts = (text: string) => [0, ...[...text.matchAll(/\n/g)].map((m) => m.index + 1)];
 
 // Span-map segment kinds and the language-service features a segment allows (TypeScript's spanmap package).
 const VERBATIM = 0, ATOM = 1, ALIAS = 2;
 const ALL_FEATURES = (1 << 20) - 1, RENAME = 1 << 8;
 
+interface Located { start: number; length: number; exact: boolean }
+
 /**
  * Where in `source` the module declares `local`, as a span and whether it is the name exactly as written (so a
  * rename can edit it). For Sass, positions in the compiled CSS are mapped back through Sass's source map; a name
  * generated by `&` or `#{}` maps to that selector as a whole, and names from other files aren't mapped.
- * @param {string} source @param {Awaited<ReturnType<typeof analyze>>} analysis
- * @returns {{ locate: (local: string) => { start: number, length: number, exact: boolean } | undefined, values: Set<string> }}
  */
-function locator(source, { css, sass }) {
-  /** @type {Map<string, { start: number, length: number }[]>} */
-  const byName = new Map();
+function locator(source: string, { css, sass }: Awaited<ReturnType<typeof analyze>>) {
+  const byName = new Map<string, Declaration[]>();
   const found = declarations(css);
   for (const d of found) byName.set(d.name, [...(byName.get(d.name) ?? []), d]);
   const cssLines = sass ? lineStarts(css) : [], inputLines = sass ? lineStarts(sass.input) : [];
   const values = new Set(found.filter((d) => d.value).map((d) => d.name));
-  /** @param {string} local */
-  const locate = (local) => {
+  const locate = (local: string): Located | undefined => {
     for (const d of byName.get(local) ?? []) {
       if (!sass) return { start: d.start, length: d.length, exact: d.length === local.length };
       const line = cssLines.findLastIndex((start) => start <= d.start);
@@ -213,8 +207,7 @@ function locator(source, { css, sass }) {
   return { locate, values };
 }
 
-/** @param {string} css @param {Options} [options] @returns {Promise<string>} */
-export async function transform(css, options) {
+export async function transform(css: string, options?: Options): Promise<string> {
   return (await mappedTransform(css, options)).text;
 }
 
@@ -224,15 +217,12 @@ export async function transform(css, options) {
  * written maps verbatim, so it can be renamed from either file. Quoted names (`"button-primary"`) and
  * `localsConvention` aliases (`buttonPrimary`) map as a whole, with go to definition and references but no rename,
  * which would have to rewrite text that differs between the two files.
- * @param {string} source @param {Options} [options]
- * @returns {Promise<{ text: string, mappings: number[][] }>}
  */
-export async function mappedTransform(source, options = {}) {
+export async function mappedTransform(source: string, options: Options = {}): Promise<{ text: string; mappings: number[][] }> {
   const analysis = await analyze(source, options);
   const { locate, values } = locator(source, analysis);
   let text = "declare const styles: {\n";
-  /** @type {number[][]} */
-  const mappings = [];
+  const mappings: number[][] = [];
   for (const [name, value] of Object.entries(analysis.json)) {
     const key = /^[A-Za-z_$][\w$]*$/.test(name) ? name : JSON.stringify(name);
     // A class's or keyframes' value starts with its local name; an @value's value is its value, not a name.

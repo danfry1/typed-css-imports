@@ -1,21 +1,17 @@
 // Content mapper for tsc: `*.module.css`, `*.module.scss`, `*.module.sass` -> typed default export, with a span map
-// from each name to its declaration (see transform.js).
+// from each name to its declaration (see transform.ts).
 // Protocol: JSON-RPC over stdio with Content-Length framing (initialize/openProject/transform/closeProject).
-import { SassError, mappedTransform } from "./transform.js";
+import { SassError, mappedTransform, type Options } from "./transform.js";
 // stdout carries the protocol, so anything a dependency logs goes to stderr instead.
 console.log = console.info = console.warn = console.error;
-/** @type {Buffer[]} */
-let chunks = [];
+let chunks: Buffer[] = [];
 let size = 0, need = 0;
 // projectHandle -> openProject params; `options` holds the tsconfig contentMappers options (e.g. localsConvention).
-/** @type {Map<string, { options?: import("./transform.js").Options, configFileName?: string }>} */
-const projects = new Map();
-/** @param {number | string} id @param {unknown} result */
-const send = (id, result) => { const b = Buffer.from(JSON.stringify({ jsonrpc: "2.0", id, result })); process.stdout.write(`Content-Length: ${b.length}\r\n\r\n`); process.stdout.write(b); };
+const projects = new Map<string, { options?: Options; configFileName?: string }>();
+const send = (id: number | string, result: unknown) => { const b = Buffer.from(JSON.stringify({ jsonrpc: "2.0", id, result })); process.stdout.write(`Content-Length: ${b.length}\r\n\r\n`); process.stdout.write(b); };
 
 // CSS and Sass syntax errors point at their position in the module; anything else is reported at its start.
-/** @param {any} e @param {string} content @param {string} fileName */
-function diagnostic(e, content, fileName) {
+function diagnostic(e: any, content: string, fileName: string) {
   if (e instanceof SassError) return { messageText: e.message, start: Math.min(e.offset ?? 0, content.length), length: 1, code: e.offset === undefined ? 9001 : 9002 };
   // A CssSyntaxError in a Sass module is about the compiled CSS, whose lines don't match the source.
   if (e.name !== "CssSyntaxError" || !e.line || /\.s[ac]ss$/.test(fileName)) return { messageText: String(e.message), start: 0, length: 1, code: 9001 };
@@ -23,8 +19,7 @@ function diagnostic(e, content, fileName) {
   return { messageText: `CSS syntax error: ${e.reason}`, start: Math.min(lineStart + (e.column ?? 1) - 1, content.length), length: 1, code: 9002 };
 }
 
-/** @param {{ id?: number | string, method: string, params?: any }} msg */
-function handle(msg) {
+function handle(msg: { id?: number | string; method: string; params?: any }) {
   const { id } = msg;
   if (id === undefined) return;
   const p = msg.params ?? {};
@@ -38,13 +33,13 @@ function handle(msg) {
       // The mappings let the language server go from a name in the TS text to its declaration in the CSS, and back.
       return mappedTransform(p.content, { ...project?.options, configFileName: project?.configFileName, fileName: p.fileName }).then(
         ({ text, mappings }) => send(id, { text, extension: ".ts", mappings }),
-        (/** @type {unknown} */ e) => send(id, { text: "export {}", extension: ".ts", diagnostics: [diagnostic(e, p.content, p.fileName)] }));
+        (e: unknown) => send(id, { text: "export {}", extension: ".ts", diagnostics: [diagnostic(e, p.content, p.fileName)] }));
     }
     default: return send(id, null);
   }
 }
 // Chunks are only concatenated once a whole message has arrived.
-process.stdin.on("data", (d) => {
+process.stdin.on("data", (d: Buffer) => {
   chunks.push(d); size += d.length;
   while (size >= need) {
     let buf = chunks.length === 1 ? chunks[0] : Buffer.concat(chunks, size);

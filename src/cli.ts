@@ -5,25 +5,22 @@
 // tsc picks up when `allowArbitraryExtensions` is on. --check only reports stale or missing files (exit 1).
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { basename, resolve } from "node:path";
-import { transform } from "./transform.js";
+import { transform, type Options } from "./transform.js";
 
 const args = process.argv.slice(2);
 const command = args.shift();
 const CONVENTIONS = ["camelCase", "camelCaseOnly", "dashes", "dashesOnly"];
 let check = false;
-/** @type {import("./transform.js").Options["localsConvention"]} */
-let localsConvention;
-/** @type {string[]} */
-const loadPaths = [];
-/** @type {string[]} */
-const files = [];
+let localsConvention: Options["localsConvention"];
+const loadPaths: string[] = [];
+const files: string[] = [];
 while (args.length) {
-  const a = /** @type {string} */ (args.shift());
+  const a = args.shift()!;
   if (a === "--check") check = true;
   else if (a === "--locals-convention") {
     const value = args.shift() ?? "";
     if (!CONVENTIONS.includes(value)) { console.error(`--locals-convention must be one of ${CONVENTIONS.join(", ")}`); process.exit(2); }
-    localsConvention = /** @type {typeof localsConvention} */ (value);
+    localsConvention = value as Options["localsConvention"];
   }
   else if (a === "--load-path") loadPaths.push(args.shift() ?? ".");
   else files.push(a);

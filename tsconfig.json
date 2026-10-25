@@ -1,13 +1,14 @@
-// Type-checks the package's own JavaScript sources (src/) with JSDoc inference. Tests have their own tsconfig in test/.
+// Builds the package: src/*.ts -> dist/ (JavaScript plus declarations for the `./transform` export).
+// Tests have their own tsconfig in test/.
 {
   "compilerOptions": {
     "target": "es2023",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
-    "noEmit": true,
-    "allowJs": true,
-    "checkJs": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
     "types": ["node"],
     // postcss-selector-parser's own declarations fail TypeScript 7's circularity check (TS5115).
     "skipLibCheck": true
