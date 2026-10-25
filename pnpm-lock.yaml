@@ -22,20 +22,20 @@ importers:
         specifier: 11.21.1
         version: 11.21.1
       sass:
-        specifier: 1.105.1
-        version: 1.105.1
+        specifier: 1.105.2
+        version: 1.105.2
       typed-css-imports:
         specifier: 'link:'
         version: 'link:'
       typescript:
-        specifier: 7.1.0-dev.20261015.1
-        version: 7.1.0-dev.20261015.1
+        specifier: 7.1.0-dev.20261017.1
+        version: 7.1.0-dev.20261017.1
 
   examples/next-parity:
     devDependencies:
       next:
         specifier: 16.4.2
-        version: 16.4.2(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.105.1)
+        version: 16.4.2(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.105.2)
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -43,8 +43,8 @@ importers:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       sass:
-        specifier: 1.105.1
-        version: 1.105.1
+        specifier: 1.105.2
+        version: 1.105.2
       typed-css-imports:
         specifier: workspace:*
         version: link:../..
@@ -66,19 +66,19 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: 6.1.2
-        version: 6.1.2(vite@8.3.4(@types/node@24.19.2)(sass@1.105.1))
+        version: 6.1.2(vite@8.3.4(@types/node@24.19.2)(sass@1.105.2))
       sass:
-        specifier: 1.105.1
-        version: 1.105.1
+        specifier: 1.105.2
+        version: 1.105.2
       typed-css-imports:
         specifier: workspace:*
         version: link:../..
       typescript:
-        specifier: 7.1.0-dev.20261015.1
-        version: 7.1.0-dev.20261015.1
+        specifier: 7.1.0-dev.20261017.1
+        version: 7.1.0-dev.20261017.1
       vite:
         specifier: 8.3.4
-        version: 8.3.4(@types/node@24.19.2)(sass@1.105.1)
+        version: 8.3.4(@types/node@24.19.2)(sass@1.105.2)
 
 packages:
 
@@ -500,44 +500,44 @@ packages:
   '@types/react@19.3.0':
     resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-cIBrgsPrcPJfnyEP1gnonNoBcV6WZAxpWdrOO6F60eDhwknkHPxcTmdwuFA9ar07fFzyfp7XhKRrqz7OlrSQnA==}
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-IjfOdppCkPOGB1oXw5gzP3k2ymBQsmOmaNN1ILoqtT4J8KpxP68sJxF0yoDXoZfqVAwItXXRQtflUg2NobP3AA==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [darwin]
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-TkxvjvYuMDSzEmeI3g6XzLPKb6FBlonWu9FkmLMeXMNAxWRBjJmXdyKEBhDM3EASDBXAZL68X2sEim1l7e9r4g==}
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-BHLQXCS75YjW9ncDITmaWQaH/uKMNDtx3W2lzyjxMi1wzS1HaA8YigFikm707SRiQ5vzChsUcA2dpBy2umDdVQ==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [darwin]
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-LaWnTy/FahvhOdo8w2ugYkDAmbcBuY6Zm8jNKYtqghx8bGeH0Mj+dX4533++tzPxAZoRnCE0WdGoBfzpDlLS8Q==}
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-yVDp96vSAlCCwQ/khZTFAQAD1wQayuntYuba3Xz5CLZWBKEjkcn3JmyyglD3NfILlskuv2y+kuTm6JC9cy4k7g==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-8hnNa5ptGrsXCl5bs7ijxVQsuOcaCGxeDOAWqFdCNIRDQ9Z69NNrmizH650gPnZQCcNyxkFpK7QmoGSv9jsHSg==}
+  '@typescript/typescript-linux-arm@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-ENQsw93mv3f7wcfoKGhuAaMGfXfpOxYGdnLjWwHPSAqRQWZeym/wEZFWa0yQylOTvmsbkk3q7VWACL5CTh5+xA==}
     engines: {node: '>=16.20.0'}
     cpu: [arm]
     os: [linux]
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-9hRSH3i84yqjpVZtapYH/GAvRxTnh71Bui6EQDWkvrBZ6wvFleEgsyEg9RXxQDedXNMMHwKRGSYT7NvRymuytw==}
+  '@typescript/typescript-linux-x64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-kTmcAbZRuOywbOS4TwylKI4QjhdX/R3T+WdDaIhOhVmHlO2y9HPFF6amWxfa2/FlaMHhRFxaD8gniUrz1vcLpw==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [linux]
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-hUdo1fnWfYsC4Az+1uBySKCaLBvrfWEH+jALFFvY5fROBU7cqoobVRQmOweJpiLsUQDqrHXAD3v0rnCEhCKI9w==}
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-1GiiEr2vygWZPhy3I1wD8jxN0MRr4iZrAK7EyI+dAQsPUbv4KM4ZUdzkpkx8PCGOwpdxN8yNbAPl/0FFZbrw2Q==}
     engines: {node: '>=16.20.0'}
     cpu: [arm64]
     os: [win32]
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20261015.1':
-    resolution: {integrity: sha512-SQephnLxrS46fwPsM2K1LGbD8jHT4H4KF+bBoGnaSoEMLgLulAdrhY7A7lWUI3OMRuwawjfHxsnSV4TjeKEhcw==}
+  '@typescript/typescript-win32-x64@7.1.0-dev.20261017.1':
+    resolution: {integrity: sha512-BkEB741BL8QNLFnPehRLhXgHibE1/E9M6++9f4eA15MQAn7gItz2ITJYhaQoCVkauH4x8lQAJlqxY3sdGChJrA==}
     engines: {node: '>=16.20.0'}
     cpu: [x64]
     os: [win32]
@@ -870,8 +870,8 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  sass@1.105.1:
-    resolution: {integrity: sha512-1CnAWPyrrnVQzXGB/DUep1vYCKCm1CIBr+YxjjiW6wk9qtzemnGP4qicH56T2F9S4Hjtv/Ne3jDz8JqfdDU4oA==}
+  sass@1.105.2:
+    resolution: {integrity: sha512-KxW6ZKZiBKWK3ziQ4YZ3cpqo8/1TlHXE8t9nBNvGDZFoBFbk2MD7RacxYFs8zy8hzeFwpFYkVyAhboi47uYPEQ==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -919,8 +919,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  typescript@7.1.0-dev.20261015.1:
-    resolution: {integrity: sha512-IonOVC0CPC24brjf3BOPYSrU8CioR/p15jRRUnx6M6zywu4tcDw0vcIKE1dR9XpOEpArd15xZ5rIFj9wjAyOkg==}
+  typescript@7.1.0-dev.20261017.1:
+    resolution: {integrity: sha512-d8K6oDCprwXc9c2A9Miu9J+JeyN7kK+QGijoyGS9uA1KKzMoGer9+5df77k/mFQ5y7TQJQ8quWDsKkSCvcdIjw==}
     engines: {node: '>=16.20.0'}
     hasBin: true
 
@@ -1235,31 +1235,31 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-darwin-arm64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-darwin-x64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-darwin-x64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-linux-arm64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-linux-arm64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-linux-arm@7.1.0-dev.20261015.1':
+  '@typescript/typescript-linux-arm@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-linux-x64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-linux-x64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-win32-arm64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-win32-arm64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@typescript/typescript-win32-x64@7.1.0-dev.20261015.1':
+  '@typescript/typescript-win32-x64@7.1.0-dev.20261017.1':
     optional: true
 
-  '@vitejs/plugin-react@6.1.2(vite@8.3.4(@types/node@24.19.2)(sass@1.105.1))':
+  '@vitejs/plugin-react@6.1.2(vite@8.3.4(@types/node@24.19.2)(sass@1.105.2))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.4(@types/node@24.19.2)(sass@1.105.1)
+      vite: 8.3.4(@types/node@24.19.2)(sass@1.105.2)
 
   baseline-browser-mapping@2.11.29: {}
 
@@ -1357,7 +1357,7 @@ snapshots:
 
   nanoid@3.3.20: {}
 
-  next@16.4.2(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.105.1):
+  next@16.4.2(@types/node@24.19.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(sass@1.105.2):
     dependencies:
       '@next/env': 16.4.2
       '@swc/helpers': 0.5.23
@@ -1376,7 +1376,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.4.2
       '@next/swc-win32-arm64-msvc': 16.4.2
       '@next/swc-win32-x64-msvc': 16.4.2
-      sass: 1.105.1
+      sass: 1.105.2
       sharp: 0.35.5(@types/node@24.19.2)
     transitivePeerDependencies:
       - '@babel/core'
@@ -1474,7 +1474,7 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.2.14
       '@rolldown/binding-win32-x64-msvc': 1.2.14
 
-  sass@1.105.1:
+  sass@1.105.2:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
@@ -1537,21 +1537,21 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  typescript@7.1.0-dev.20261015.1:
+  typescript@7.1.0-dev.20261017.1:
     optionalDependencies:
-      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20261015.1
-      '@typescript/typescript-darwin-x64': 7.1.0-dev.20261015.1
-      '@typescript/typescript-linux-arm': 7.1.0-dev.20261015.1
-      '@typescript/typescript-linux-arm64': 7.1.0-dev.20261015.1
-      '@typescript/typescript-linux-x64': 7.1.0-dev.20261015.1
-      '@typescript/typescript-win32-arm64': 7.1.0-dev.20261015.1
-      '@typescript/typescript-win32-x64': 7.1.0-dev.20261015.1
+      '@typescript/typescript-darwin-arm64': 7.1.0-dev.20261017.1
+      '@typescript/typescript-darwin-x64': 7.1.0-dev.20261017.1
+      '@typescript/typescript-linux-arm': 7.1.0-dev.20261017.1
+      '@typescript/typescript-linux-arm64': 7.1.0-dev.20261017.1
+      '@typescript/typescript-linux-x64': 7.1.0-dev.20261017.1
+      '@typescript/typescript-win32-arm64': 7.1.0-dev.20261017.1
+      '@typescript/typescript-win32-x64': 7.1.0-dev.20261017.1
 
   undici-types@7.24.6: {}
 
   util-deprecate@1.0.2: {}
 
-  vite@8.3.4(@types/node@24.19.2)(sass@1.105.1):
+  vite@8.3.4(@types/node@24.19.2)(sass@1.105.2):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -1561,4 +1561,4 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.19.2
       fsevents: 2.3.3
-      sass: 1.105.1
+      sass: 1.105.2

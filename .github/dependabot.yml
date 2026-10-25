@@ -7,6 +7,11 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
+    ignore:
+      # Keep @types/node on a major that type-checks src/ (26's stream types reject server.js's Buffer handling).
+      # A major bump is a deliberate change.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       dependencies:
         patterns: ["*"]
