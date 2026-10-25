@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+No code changes.
+
+- Tested with TypeScript 7.1.0-beta; the README's install command now installs it.
+- SECURITY.md describes which files Sass modules read during type-checking.
+- First stable release published from CI, with npm provenance.
+
 ## 0.1.1-beta.1
 
 No code changes. First release published from CI through npm staged publishing (trusted publishing). (The v0.1.1-beta.0 tag's release run failed before publishing.)

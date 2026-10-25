@@ -27,10 +27,10 @@ styles.buttn;
 
 ## Setup
 
-Requires TypeScript 7.1 (currently in beta) and Node >= 22.12.
+Requires TypeScript 7.1 and Node >= 22.12. Until 7.1 is released, install the beta:
 
 ```sh
-pnpm add -D typed-css-imports
+pnpm add -D typed-css-imports typescript@7.1.0-beta
 ```
 
 `tsconfig.json`:
