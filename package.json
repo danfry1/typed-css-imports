@@ -59,9 +59,9 @@
   },
   "devDependencies": {
     "@types/node": "24.19.2",
-    "npm": "11.21.1",
+    "npm": "12.2.1",
     "sass": "1.105.2",
     "typed-css-imports": "link:",
-    "typescript": "7.1.0-dev.20261017.1"
+    "typescript": "7.1.0-dev.20261018.1"
   }
 }
