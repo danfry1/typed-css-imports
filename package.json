@@ -1,6 +1,6 @@
 {
   "name": "typed-css-imports",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Typed CSS and Sass module imports with plain tsc: `styles.buttn` is a compile error. A TypeScript 7.1 content mapper.",
   "license": "MIT",
   "author": "Daniel Fry",
@@ -55,7 +55,9 @@
   },
   "dependencies": {
     "postcss": "8.5.30",
-    "postcss-modules": "9.0.1"
+    "postcss-modules": "9.0.1",
+    "postcss-selector-parser": "7.1.6",
+    "source-map-js": "1.2.2"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

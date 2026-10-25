@@ -1,5 +1,6 @@
-// Editor behaviour through the TypeScript 7.1 language server (`tsc --lsp --stdio`): class-name completion, and
-// completion updating as soon as the open (unsaved) CSS document changes.
+// Editor behaviour through the TypeScript 7.1 language server (`tsc --lsp --stdio`): class-name completion,
+// completion updating as soon as the open (unsaved) CSS document changes, and go to definition, references and
+// rename between components and the module.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
@@ -76,6 +77,53 @@ test("Sass modules: completion follows unsaved edits, including classes generate
     notify("textDocument/didOpen", { textDocument: { uri: scssUri, languageId: "scss", version: 1, text: scss } });
     notify("textDocument/didChange", { textDocument: { uri: scssUri, version: 2 }, contentChanges: [{ text: scss.replace("info, danger", "info, danger, success") }] });
     assert.ok((await complete()).includes("toneSuccess"), "edit to the open Sass document not reflected");
+  } finally {
+    await close();
+  }
+});
+
+test("go to definition, references and rename between components and the module", async () => {
+  const { request, notify, close } = lsp();
+  try {
+    await request("initialize", { processId: process.pid, rootUri: pathToFileURL(dir).href, initializationOptions: { runExternalCode: true }, capabilities: {} });
+    notify("initialized", {});
+    const tsUri = pathToFileURL(dir + "editor-nav.ts").href, cssUri = pathToFileURL(dir + "button.module.css").href, scssUri = pathToFileURL(dir + "card.module.scss").href;
+    const ts = 'import styles from "./button.module.css";\nimport card from "./card.module.scss";\nstyles.button;\nstyles.buttonPrimary;\ncard.cardTitle;\ncard.stack;\n';
+    notify("textDocument/didOpen", { textDocument: { uri: tsUri, languageId: "typescript", version: 1, text: ts } });
+    const css = readFileSync(new URL("button.module.css", import.meta.url), "utf8"), scss = readFileSync(new URL("card.module.scss", import.meta.url), "utf8");
+    // The range of `text` (first occurrence after `after`) in a file, as an LSP range.
+    const rangeOf = (source, text, after = "") => {
+      const start = source.indexOf(text, source.indexOf(after) + after.length), line = source.slice(0, start).split("\n").length - 1;
+      const character = start - source.lastIndexOf("\n", start - 1) - 1;
+      return { start: { line, character }, end: { line, character: character + text.length } };
+    };
+    const at = (line, character) => ({ textDocument: { uri: tsUri }, position: { line, character } });
+    const definition = async (line, character) => (await request("textDocument/definition", at(line, character))).map((l) => ({ uri: l.uri ?? l.targetUri, range: l.range ?? l.targetSelectionRange }));
+
+    assert.deepEqual(await definition(2, 9), [{ uri: cssUri, range: rangeOf(css, "button", "\n.") }]);
+    // A localsConvention alias goes to the class it comes from; a Sass name to the nested selector that generates it.
+    assert.deepEqual(await definition(3, 9), [{ uri: cssUri, range: rangeOf(css, "button-primary") }]);
+    assert.deepEqual(await definition(4, 7), [{ uri: scssUri, range: rangeOf(scss, "&-title") }]);
+    // Classes from a partial are typed but declared in another file, so there's no definition in the module.
+    assert.deepEqual(await definition(5, 7), []);
+
+    notify("textDocument/didOpen", { textDocument: { uri: cssUri, languageId: "css", version: 1, text: css } });
+    const inCss = { textDocument: { uri: cssUri }, position: rangeOf(css, "button", "\n.").start };
+    const references = await request("textDocument/references", { ...inCss, context: { includeDeclaration: true } });
+    assert.ok(references.some((r) => r.uri === tsUri && r.range.start.line === 2), "references from the CSS miss the component");
+
+    notify("textDocument/didOpen", { textDocument: { uri: scssUri, languageId: "scss", version: 1, text: scss } });
+    const fromScss = await request("textDocument/references", { textDocument: { uri: scssUri }, position: rangeOf(scss, "&-title").start, context: { includeDeclaration: true } });
+    assert.ok(fromScss.some((r) => r.uri === tsUri && r.range.start.line === 4), "references from the Sass module miss the component");
+
+    // Renaming a class from either file edits the module and every use.
+    for (const params of [at(2, 9), inCss]) {
+      const { changes } = await request("textDocument/rename", { ...params, newName: "btn" });
+      assert.deepEqual(changes[cssUri], [{ range: rangeOf(css, "button", "\n."), newText: "btn" }]);
+      assert.deepEqual(changes[tsUri], [{ range: rangeOf(ts, "button", "styles."), newText: "btn" }]);
+    }
+    // A name the module writes differently (button-primary) can't be renamed from the CSS.
+    assert.equal(await request("textDocument/rename", { textDocument: { uri: cssUri }, position: rangeOf(css, "button-primary").start, newName: "x" }), null);
   } finally {
     await close();
   }

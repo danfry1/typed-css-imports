@@ -9,7 +9,8 @@ treats CSS files as untrusted input:
   bundler's own Sass build, that reads the files the module `@use`s or `@import`s, from the module's directory,
   `sass.loadPaths` and `pkg:` URLs resolved through node_modules. Sass has no way to run code from a stylesheet, and
   no custom Sass functions or importers are registered.
-- Its only runtime dependencies are `postcss` and `postcss-modules`; Sass is not a dependency.
+- Its only runtime dependencies are `postcss`, `postcss-modules`, `postcss-selector-parser` (already a dependency of
+  postcss-modules) and `source-map-js` (already a dependency of postcss); Sass is not a dependency.
 
 ## Supply chain
 

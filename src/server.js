@@ -1,6 +1,7 @@
-// Content mapper for tsc: `*.module.css`, `*.module.scss`, `*.module.sass` -> typed default export (see transform.js).
+// Content mapper for tsc: `*.module.css`, `*.module.scss`, `*.module.sass` -> typed default export, with a span map
+// from each name to its declaration (see transform.js).
 // Protocol: JSON-RPC over stdio with Content-Length framing (initialize/openProject/transform/closeProject).
-import { SassError, transform } from "./transform.js";
+import { SassError, mappedTransform } from "./transform.js";
 // stdout carries the protocol, so anything a dependency logs goes to stderr instead.
 console.log = console.info = console.warn = console.error;
 /** @type {Buffer[]} */
@@ -34,8 +35,9 @@ function handle(msg) {
     case "transform":
     {
       const project = projects.get(p.projectHandle);
-      return transform(p.content, { ...project?.options, configFileName: project?.configFileName, fileName: p.fileName }).then(
-        (text) => send(id, { text, extension: ".ts" }),
+      // The mappings let the language server go from a name in the TS text to its declaration in the CSS, and back.
+      return mappedTransform(p.content, { ...project?.options, configFileName: project?.configFileName, fileName: p.fileName }).then(
+        ({ text, mappings }) => send(id, { text, extension: ".ts", mappings }),
         (/** @type {unknown} */ e) => send(id, { text: "export {}", extension: ".ts", diagnostics: [diagnostic(e, p.content, p.fileName)] }));
     }
     default: return send(id, null);
