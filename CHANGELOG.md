@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+No code changes.
+
+- README: VS Code setup as tested with the TypeScript 7 extension 1.0.1. Choose Use Workspace Version (the extension starts on its bundled 7.0 without prompting) and trust the workspace (in Restricted Mode nothing is type-checked).
+
 ## 0.1.1
 
 No code changes.

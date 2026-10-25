@@ -1,6 +1,6 @@
 {
   "name": "typed-css-imports",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Typed CSS and Sass module imports with plain tsc: `styles.buttn` is a compile error. A TypeScript 7.1 content mapper.",
   "license": "MIT",
   "author": "Daniel Fry",
