@@ -51,7 +51,7 @@
     "test": "pnpm typecheck && tsc -p test --runExternalCode && node --test \"test/*.test.mjs\" && test/fallback.sh && pnpm --filter example-vite-react run typecheck && pnpm --filter example-vite-react run parity",
     "typecheck": "tsc -p .",
     "test:package": "test/package.sh",
-    "prepublishOnly": "node -e \"if (!process.env.GITHUB_ACTIONS) { console.error('Releases are published from CI: push a signed v* tag (see Releasing in README.md).'); process.exit(1) }\""
+    "prepublishOnly": "node -e \"if (!process.env.GITHUB_ACTIONS) { console.error('Releases are published from CI: push a signed v* tag (see CONTRIBUTING.md).'); process.exit(1) }\""
   },
   "dependencies": {
     "postcss": "8.5.30",
