@@ -112,19 +112,23 @@ How soon types update depends on what the editor sends the server:
 
 ### VS Code
 
-Install the [TypeScript 7](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.native-preview) extension (`TypeScriptTeam.native-preview`) and point `js/ts.tsdk.path` at the project's TypeScript 7.1 package, for example in your user `settings.json`:
+1. Install the [TypeScript 7](https://marketplace.visualstudio.com/items?itemName=TypeScriptTeam.native-preview) extension (`TypeScriptTeam.native-preview`).
+2. Point `js/ts.tsdk.path` at the project's TypeScript 7.1 package, in `.vscode/settings.json` (relative to the workspace folder) or in user settings:
 
-```jsonc
-{
-  "js/ts.tsdk.path": "/path/to/your-project/node_modules/typescript"
-}
-```
+   ```jsonc
+   {
+     "js/ts.tsdk.path": "node_modules/typescript"
+   }
+   ```
 
-The extension enables content mappers by default (`js/ts.contentMappers.enabled`), and edits to an open `.module.css` file update errors in components before you save.
+3. Run **TypeScript: Select TypeScript Version...** and choose **Use Workspace Version**. The extension starts with the TypeScript 7.0 it bundles and doesn't prompt to switch by default.
+4. Trust the workspace. In Restricted Mode the extension doesn't run at all, so nothing is type-checked.
 
-Without the setting, the extension runs the TypeScript 7.0 it bundles, which has no content mappers. There are no errors: imports silently fall back to `vite/client`'s `{ [key: string]: string }`. The [check file](#check-its-working) catches this.
+The extension enables content mappers by default (`js/ts.contentMappers.enabled`) and attaches to open `.module.css` and `.module.scss` files, so edits update errors and completions in components before you save.
 
-Tested with VS Code 1.135 and extension version 1.0.1, with the setting in user settings and `.module.css` files.
+On the bundled 7.0 there are no errors: imports silently fall back to `vite/client`'s `{ [key: string]: string }`. The [check file](#check-its-working) catches this, as long as the workspace is trusted.
+
+Tested with VS Code 1.135 and extension version 1.0.1, with CSS and Sass modules.
 
 ### LazyVim
 
