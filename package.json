@@ -58,16 +58,16 @@
     "prepublishOnly": "node -e \"if (!process.env.GITHUB_ACTIONS) { console.error('Releases are published from CI: push a signed v* tag (see CONTRIBUTING.md).'); process.exit(1) }\""
   },
   "dependencies": {
-    "postcss": "8.5.30",
+    "postcss": "8.5.31",
     "postcss-modules": "9.0.1",
-    "postcss-selector-parser": "7.1.6",
+    "postcss-selector-parser": "7.1.7",
     "source-map-js": "1.2.2"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
     "npm": "11.21.1",
-    "sass": "1.105.2",
+    "sass": "1.106.1",
     "typed-css-imports": "link:",
-    "typescript": "7.1.0-dev.20261018.1"
+    "typescript": "7.1.0-dev.20261022.1"
   }
 }
